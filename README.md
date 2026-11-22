@@ -4,11 +4,10 @@
 [![rank](https://make.fun/badge/news-image-20261122/algifarri/makefun-news-image-20261122/rank.svg)](https://make.fun/bounty/news-image-20261122/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261122)
 [![reward](https://make.fun/badge/news-image-20261122/algifarri/makefun-news-image-20261122/reward.svg)](https://make.fun/bounty/news-image-20261122/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261122)
 
-One image that sums up the world news of **Sunday 22 November 2026**,
-drawn procedurally by `main.py` — a pure standard-library Python program
-with a hand-drawn 6x8 bitmap typeface, a small RGB canvas and a
-from-scratch PNG writer. No network, no randomness: every run writes the
-same bytes.
+`main.py` draws the whole picture from scratch: a hand-built 6x8 pixel
+typeface, a small RGB canvas, and a PNG encoder written out by hand,
+using nothing but the Python standard library. It never touches the
+network and never rolls any dice, so each run produces the same file.
 
 The poster is a broadsheet front page. The hero story is COP31 in Antalya
 still without a deal as the talks run into Sunday, the draft having dropped
