@@ -31,7 +31,9 @@ This writes `out/entry.png` (1024x1024 PNG).
 
 The program renders the page twice and only writes the file when both
 renders match, so a non-deterministic bug fails loudly instead of
-shipping two different images.
+shipping two different images. It also refuses to write an entry
+bigger than the 1 MiB limit. A dateline ticker under the hero names
+the cities behind the day's stories.
 
 ---
 

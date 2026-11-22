@@ -211,6 +211,10 @@ def pic_cop(cv, x, y, w, h):
     cv.fill(px, py, 128, 34, WHITE)
     cv.frame(px, py, 128, 34, RED, 3)
     draw(cv, px + 14, py + 9, "NO DEAL", 2, RED)
+    sx, sy = x + 26, y + 22
+    cv.blob(sx, sy, 8, GOLD)
+    for dx, dy in ((14, 0), (-14, 0), (0, 14), (0, -14)):
+        cv.stroke(sx, sy, sx + dx, sy + dy, GOLD, 2)
     draw(cv, x + 8, y + h - 14, "ANTALYA", 1, FAINT)
     draw(cv, x + 168, y + h - 14, "200 NATIONS", 1, FAINT)
 
@@ -353,6 +357,10 @@ PAGE = [
 # Sections.  Each paints itself and reports the height it took.
 # ---------------------------------------------------------------------------
 
+def rule(cv, y):
+    cv.fill(MARGIN, y, COL, 2, FAINT)
+
+
 def paint_masthead(cv, sec, top):
     cv.fill(MARGIN, top, COL, 5, INK)
     cv.fill(MARGIN, top + 8, COL, 2, INK)
@@ -442,6 +450,7 @@ def compose():
     y = 22
     for sec in PAGE:
         y += PAINTERS[sec["kind"]](cv, sec, y) + 10
+        rule(cv, y - 6)
     return cv
 
 
@@ -475,6 +484,8 @@ def main():
     second = encode_png(compose())
     if first != second:
         raise SystemExit("non-deterministic render")
+    if len(first) > 1048576:
+        raise SystemExit("entry over 1 MiB")
     with open(os.path.join(out_dir, "entry.png"), "wb") as fh:
         fh.write(first)
 
