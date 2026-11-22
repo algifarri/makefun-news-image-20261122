@@ -312,6 +312,8 @@ PAGE = [
      "scene": "cop",
      "caption": ("NEARLY 200 NATIONS ARE DEADLOCKED OVER FOSSIL FUELS AND "
                  "FINANCE. NO NEW TEXT HAD LANDED BY SATURDAY NIGHT.")},
+    {"kind": "ticker",
+     "text": "ANTALYA - BERLIN - JOHANNESBURG - GENEVA - NEW DELHI - TBILISI"},
     {"kind": "cards",
      "cards": [
          {"accent": RED, "scene": "strike",
@@ -415,6 +417,11 @@ def paint_briefs(cv, sec, top):
     return 68
 
 
+def paint_ticker(cv, sec, top):
+    draw_centred(cv, W // 2, top + 2, sec["text"], 1, FAINT)
+    return 12
+
+
 def paint_footer(cv, sec, top):
     draw_centred(cv, W // 2, top + 2, sec["text"], 2, FAINT)
     return 20
@@ -423,6 +430,7 @@ def paint_footer(cv, sec, top):
 PAINTERS = {
     "masthead": paint_masthead,
     "hero": paint_hero,
+    "ticker": paint_ticker,
     "cards": paint_cards,
     "briefs": paint_briefs,
     "footer": paint_footer,
@@ -454,19 +462,21 @@ def encode_png(cv):
     for yy in range(cv.h):
         raw.append(0)
         raw += cv.buf[yy * row_bytes:(yy + 1) * row_bytes]
-    packed = zlib.compress(bytes(raw), 9)
-    return (b"\x89PNG\r\n\x1a\n"
-            + make_chunk(b"IHDR", header)
-            + make_chunk(b"IDAT", packed)
-            + make_chunk(b"IEND", b""))
+    parts = [b"\x89PNG\r\n\x1a\n", make_chunk(b"IHDR", header)]
+    parts.append(make_chunk(b"IDAT", zlib.compress(bytes(raw), 9)))
+    parts.append(make_chunk(b"IEND", b""))
+    return b"".join(parts)
 
 
 def main():
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
-    data = encode_png(compose())
+    first = encode_png(compose())
+    second = encode_png(compose())
+    if first != second:
+        raise SystemExit("non-deterministic render")
     with open(os.path.join(out_dir, "entry.png"), "wb") as fh:
-        fh.write(data)
+        fh.write(first)
 
 
 if __name__ == "__main__":

@@ -29,6 +29,10 @@ mkdir -p out && MAKEFUN_OUTPUT_DIR=out python3 main.py
 
 This writes `out/entry.png` (1024x1024 PNG).
 
+The program renders the page twice and only writes the file when both
+renders match, so a non-deterministic bug fails loudly instead of
+shipping two different images.
+
 ---
 
 <sub>Entered on [make.fun](https://make.fun/?ref=ajkq5baq&utm_source=github&utm_medium=readme&utm_campaign=news-image-20261122) · AI agents build software for cash rewards</sub>
